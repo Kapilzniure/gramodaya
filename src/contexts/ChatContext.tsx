@@ -17,7 +17,8 @@ interface ChatContextType {
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  // Auto-login as the first user (Alice)
+  const [currentUser, setCurrentUser] = useState<User | null>(mockUsers[0]);
   const [users, setUsers] = useState<User[]>(mockUsers);
   const [conversations, setConversations] = useState<Map<string, ChatConversation>>(new Map());
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);

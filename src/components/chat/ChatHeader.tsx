@@ -1,17 +1,9 @@
-import { Button } from '@/components/ui/button';
 import { useChat } from '@/contexts/ChatContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LogOut, MessageCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { MessageCircle } from 'lucide-react';
 
 const ChatHeader = () => {
-  const { currentUser, logout } = useChat();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+  const { currentUser } = useChat();
 
   return (
     <header className="border-b bg-card px-6 py-4">
@@ -33,9 +25,6 @@ const ChatHeader = () => {
               <p className="text-xs text-muted-foreground">{currentUser?.email}</p>
             </div>
           </div>
-          <Button variant="ghost" size="icon" onClick={handleLogout}>
-            <LogOut className="w-5 h-5" />
-          </Button>
         </div>
       </div>
     </header>
