@@ -17,54 +17,17 @@ interface ChatContextType {
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
 export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Auto-login as the first user (Alice)
-  const [currentUser, setCurrentUser] = useState<User | null>(mockUsers[0]);
-  const [users, setUsers] = useState<User[]>(mockUsers);
+  const [currentUser, setCurrentUser] = useState<User | null>({
+    id: '1',
+    name: 'You',
+    email: 'you@example.com',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=You',
+    isOnline: true
+  });
+  const [users, setUsers] = useState<User[]>([]);
   const [conversations, setConversations] = useState<Map<string, ChatConversation>>(new Map());
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
-  // Initialize conversations from mock data
-  useEffect(() => {
-    if (currentUser) {
-      const convMap = new Map<string, ChatConversation>();
-      
-      users.forEach(user => {
-        if (user.id !== currentUser.id) {
-          const userMessages = mockMessages.filter(
-            msg => 
-              (msg.senderId === currentUser.id && msg.receiverId === user.id) ||
-              (msg.senderId === user.id && msg.receiverId === currentUser.id)
-          ).sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
-
-          const unreadCount = userMessages.filter(
-            msg => msg.receiverId === currentUser.id && !msg.read
-          ).length;
-
-          convMap.set(user.id, {
-            userId: user.id,
-            messages: userMessages,
-            unreadCount
-          });
-        }
-      });
-      
-      setConversations(convMap);
-    }
-  }, [currentUser, users]);
-
-  // Simulate random online/offline status changes
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setUsers(prevUsers => 
-        prevUsers.map(user => ({
-          ...user,
-          isOnline: Math.random() > 0.3 // 70% chance of being online
-        }))
-      );
-    }, 15000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const login = (email: string, password: string): boolean => {
     const user = mockUsers.find(u => u.email === email);
