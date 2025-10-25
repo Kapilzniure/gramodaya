@@ -107,3 +107,25 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+  
+  .glass-dark {
+    @apply bg-black/20 backdrop-blur-md border border-white/10;
+  }
+  
+  .gradient-orange {
+    @apply bg-gradient-to-br from-primary via-orange-500 to-orange-600;
+  }
+  
+  .shadow-glow-orange {
+    box-shadow: 0 0 30px -5px hsl(var(--primary) / 0.5);
+  }
+  
+  .hover-lift {
+    @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-lg;
+  }
+}
