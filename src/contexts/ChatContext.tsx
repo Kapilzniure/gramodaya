@@ -24,7 +24,7 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=You',
     isOnline: true
   });
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<User[]>(mockUsers);
   const [conversations, setConversations] = useState<Map<string, ChatConversation>>(new Map());
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
