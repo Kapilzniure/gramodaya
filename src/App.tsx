@@ -25,50 +25,70 @@ import SpinWheel from "./pages/SpinWheel";
 import Gifts from "./pages/Gifts";
 import FeedbackHelp from "./pages/FeedbackHelp";
 import Wishlist from "./pages/Wishlist";
+import UploadProduct from "./pages/UploadProduct";
+import UserProfile from "./pages/UserProfile";
+
+import { LevelUpCelebration } from '@/components/LevelUpCelebration';
+import { useAppStore } from '@/store/useAppStore';
+import TrackOrder from "./pages/TrackOrder";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <CartProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <div className="flex flex-col min-h-screen pb-16 md:pb-0">
-              <Header />
-              <main className="flex-1">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/products" element={<Products />} />
-                  <Route path="/product/:id" element={<ProductDetail />} />
-                  <Route path="/cart" element={<Cart />} />
-                  <Route path="/sell" element={<Sell />} />
-                  <Route path="/seller-dashboard" element={<SellerDashboard />} />
-                  <Route path="/profile" element={<Profile />} />
-                  <Route path="/profile/:username" element={<Profile />} />
-                  <Route path="/barter" element={<BarterCorner />} />
-                  <Route path="/service-hub" element={<ServiceHub />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/buzz" element={<Buzz />} />
-                  <Route path="/spin" element={<SpinWheel />} />
-                  <Route path="/gifts" element={<Gifts />} />
-                  <Route path="/wishlist" element={<Wishlist />} />
-                  <Route path="/help" element={<FeedbackHelp />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </main>
-              <Footer />
-              <MobileBottomNav />
-            </div>
-          </BrowserRouter>
-        </TooltipProvider>
-      </CartProvider>
-    </LanguageProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const justLeveledUp = useAppStore(state => state.justLeveledUp);
+  const clearLevelUp = useAppStore(state => state.clearLevelUp);
+  const currentUser = useAppStore(state => state.currentUser);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <LanguageProvider>
+        <CartProvider>
+          <TooltipProvider>
+            {justLeveledUp && currentUser && (
+              <LevelUpCelebration
+                level={currentUser.level}
+                onClose={clearLevelUp}
+              />
+            )}
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <div className="flex flex-col min-h-screen pb-16 md:pb-0">
+                <Header />
+                <main className="flex-1">
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/product/:id" element={<ProductDetail />} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/sell" element={<Sell />} />
+                    <Route path="/seller-dashboard" element={<SellerDashboard />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile/:username" element={<UserProfile />} />
+                    <Route path="/upload-product" element={<UploadProduct />} />
+                    <Route path="/barter" element={<BarterCorner />} />
+                    <Route path="/service-hub" element={<ServiceHub />} />
+                    <Route path="/about" element={<About />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/track-order" element={<TrackOrder />} />
+                    <Route path="/buzz" element={<Buzz />} />
+                    <Route path="/spin" element={<SpinWheel />} />
+                    <Route path="/gifts" element={<Gifts />} />
+                    <Route path="/wishlist" element={<Wishlist />} />
+                    <Route path="/help" element={<FeedbackHelp />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
+                <Footer />
+                <MobileBottomNav />
+              </div>
+            </BrowserRouter>
+          </TooltipProvider>
+        </CartProvider>
+      </LanguageProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
