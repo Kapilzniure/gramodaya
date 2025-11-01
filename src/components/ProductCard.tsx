@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+
+import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingCart, Star, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -7,7 +8,7 @@ import { Link } from "react-router-dom";
 import type { Product } from "@/lib/mockData";
 import { toast } from "sonner";
 import { useAppStore } from "@/store/useAppStore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ProductCardProps {
   product: Product;
@@ -23,6 +24,10 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
   const [isWishlisted, setIsWishlisted] = useState(
     currentUser ? isInWishlist(currentUser.id, product.id) : false
   );
+
+  useEffect(() => {
+    setIsWishlisted(currentUser ? isInWishlist(currentUser.id, product.id) : false);
+  }, [currentUser, isInWishlist, product.id]);
   
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -70,13 +75,36 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
               onClick={handleWishlistToggle}
               className="absolute top-2 right-2 z-10 p-2 bg-background/80 backdrop-blur-sm rounded-full shadow-md hover:bg-background transition-colors"
             >
-              <Heart 
-                className={`h-5 w-5 transition-all ${
-                  isWishlisted 
-                    ? 'fill-red-500 text-red-500 scale-110' 
-                    : 'text-muted-foreground hover:text-red-500'
-                }`}
-              />
+              <AnimatePresence mode="wait">
+                {isWishlisted ? (
+                  <motion.div
+                    key="heart-filled"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: [1, 1.2, 1], opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{
+                      duration: 0.4,
+                      ease: "easeInOut",
+                    }}
+                  >
+                    <Heart 
+                      className="h-5 w-5 fill-red-500 text-red-500"
+                    />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="heart-empty"
+                    initial={{ opacity: 0, scale: 0 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Heart 
+                      className="h-5 w-5 text-muted-foreground hover:text-red-500"
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.button>
             
             {product.condition === 'used' && (
@@ -122,3 +150,4 @@ export const ProductCard = ({ product, onAddToCart }: ProductCardProps) => {
     </motion.div>
   );
 };
+

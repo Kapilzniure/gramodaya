@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { ShoppingCart, Menu, User, Store, Gift, TrendingUp, HelpCircle, Heart, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/contexts/CartContext";
 
 export const Header = () => {
   const { cartCount } = useCart();
@@ -163,3 +164,4 @@ export const Header = () => {
     </header>
   );
 };
+

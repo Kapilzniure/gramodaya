@@ -1,5 +1,16 @@
+
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import type { Product } from "@/lib/mockData";
+
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  category: string;
+  description: string;
+  title: string;
+  images: string[];
+}
 
 interface CartItem {
   productId: string;
@@ -59,7 +70,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           productId: product.id,
           quantity,
           price: product.price,
-          title: product.title,
+          title: product.name,
           image: product.images[0],
         },
       ];

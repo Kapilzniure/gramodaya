@@ -14,6 +14,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 
+
+
 const ActivityIcon = ({ type }: { type: CommunityActivity['type'] }) => {
   const icons = {
     sale: <ShoppingBag className="h-4 w-4" />,
@@ -86,6 +88,9 @@ export const CommunityFeed = () => {
   const handleAddComment = (activityId: string) => {
     const comment = commentText[activityId]?.trim();
     if (!comment) return;
+
+    // check for banned words
+   
 
     const newComment = {
       id: `c${Date.now()}`,

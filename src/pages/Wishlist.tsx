@@ -1,3 +1,4 @@
+
 // ============================================
 // Wishlist Page - Save items for later
 // ============================================
@@ -8,36 +9,22 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAppStore } from "@/store/useAppStore";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/contexts/CartContext";
 import { toast } from "sonner";
 import { useNavigate, Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
+
 
 const Wishlist = () => {
   const navigate = useNavigate();
   const { addItem } = useCart();
+  const { t } = useTranslation();
   
   const currentUser = useAppStore(state => state.currentUser);
   const wishlist = useAppStore(state => state.wishlist);
   const products = useAppStore(state => state.products);
   const removeFromWishlist = useAppStore(state => state.removeFromWishlist);
   const getUserById = useAppStore(state => state.getUserById);
-
-  // if (!currentUser) {
-  //   return (
-  //     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-card/30 to-background py-8">
-  //       <Card className="p-8 text-center max-w-md">
-  //         <Heart className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
-  //         <h2 className="text-2xl font-bold mb-2">Login Required</h2>
-  //         <p className="text-muted-foreground mb-6">
-  //           Please log in to view your wishlist
-  //         </p>
-  //         <Button onClick={() => navigate('/login')}>
-  //           Go to Login
-  //         </Button>
-  //       </Card>
-  //     </div>
-  //   );
-  // }
 
   const userWishlist = wishlist.filter(item => item.userId === currentUser.id);
   const wishlistProducts = userWishlist
@@ -46,12 +33,12 @@ const Wishlist = () => {
 
   const handleRemove = (productId: string) => {
     removeFromWishlist(currentUser.id, productId);
-    toast.success("Removed from wishlist");
+    toast.success(t("removed_from_wishlist"));
   };
 
   const handleAddToCart = (product: any) => {
     addItem(product, 1);
-    toast.success("Added to cart! 🛒");
+    toast.success(t("added_to_cart"));
   };
 
   return (
@@ -66,11 +53,11 @@ const Wishlist = () => {
           <div className="flex items-center gap-3 mb-4">
             <Heart className="h-10 w-10 text-primary fill-primary" />
             <h1 className="text-4xl font-bold">
-              My <span className="text-primary">Wishlist</span>
+              {t('my')} <span className="text-primary">{t('wishlist')}</span>
             </h1>
           </div>
           <p className="text-muted-foreground text-lg">
-            {wishlistProducts.length} {wishlistProducts.length === 1 ? 'item' : 'items'} saved for later
+            {wishlistProducts.length} {wishlistProducts.length === 1 ? t('item') : t('items')} {t('saved_for_later')}
           </p>
         </motion.div>
 
@@ -82,12 +69,12 @@ const Wishlist = () => {
           >
             <Card className="p-12 text-center">
               <Heart className="h-24 w-24 mx-auto mb-6 text-muted-foreground" />
-              <h2 className="text-2xl font-bold mb-3">Your wishlist is empty</h2>
+              <h2 className="text-2xl font-bold mb-3">{t('wishlist_empty')}</h2>
               <p className="text-muted-foreground mb-6">
-                Start adding products you love to your wishlist!
+                {t('start_adding_products')}
               </p>
               <Button onClick={() => navigate('/products')} size="lg">
-                Browse Products
+                {t('browse_products')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Card>
@@ -106,9 +93,17 @@ const Wishlist = () => {
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ y: -8 }}
                 >
-                  <Card className="overflow-hidden h-full flex flex-col group">
-                    {/* Product Image */}
-                    <Link to={`/product/${product.id}`} className="block relative">
+                  <Card className="overflow-hidden h-full flex flex-col group relative">
+                    <Button
+                        onClick={() => handleRemove(product.id)}
+                        variant="ghost"
+                        size="icon"
+                        className="absolute top-2 right-2 z-10 bg-white/50 rounded-full hover:bg-white/80"
+                      >
+                        <Heart className="h-5 w-5 text-red-500 fill-current" />
+                      </Button>
+                    <Link to={`/product/${product.id}`} className="contents">
+                      {/* Product Image */}
                       <div className="aspect-square overflow-hidden bg-muted">
                         <img
                           src={product.images[0]}
@@ -121,63 +116,60 @@ const Wishlist = () => {
                         className="absolute top-2 left-2"
                         variant={product.condition === 'new' ? 'default' : 'secondary'}
                       >
-                        {product.condition === 'new' ? 'New' : 
-                         product.condition === 'almostNew' ? 'Almost New' : 'Used'}
+                        {product.condition === 'new' ? t('new') : 
+                         product.condition === 'almostNew' ? t('almost_new') : t('used')}
                       </Badge>
-                    </Link>
 
-                    {/* Product Info */}
-                    <div className="p-4 flex-1 flex flex-col">
-                      <Link to={`/product/${product.id}`}>
+                      {/* Product Info */}
+                      <div className="p-4 flex-1 flex flex-col">
                         <h3 className="font-bold text-lg mb-2 line-clamp-2 hover:text-primary transition-colors">
                           {product.title}
                         </h3>
-                      </Link>
-                      
-                      <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
-                        {product.description}
-                      </p>
+                        
+                        <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
+                          {product.description}
+                        </p>
 
-                      {/* Seller Info */}
-                      {seller && (
-                        <Link 
-                          to={`/profile/${seller.username}`}
-                          className="flex items-center gap-2 mb-3 text-sm hover:text-primary transition-colors"
-                        >
-                          <img
-                            src={seller.avatar}
-                            alt={seller.name}
-                            className="w-6 h-6 rounded-full object-cover"
-                          />
-                          <span className="text-muted-foreground">{seller.name}</span>
-                        </Link>
-                      )}
+                        {/* Seller Info */}
+                        {seller && (
+                          <div 
+                            className="flex items-center gap-2 mb-3 text-sm hover:text-primary transition-colors"
+                          >
+                            <img
+                              src={seller.avatar}
+                              alt={seller.name}
+                              className="w-6 h-6 rounded-full object-cover"
+                            />
+                            <span className="text-muted-foreground">{seller.name}</span>
+                          </div>
+                        )}
 
-                      {/* Price */}
-                      <div className="text-2xl font-bold text-primary mb-4 mt-auto">
-                        रू {product.price.toLocaleString()}
+                        {/* Price */}
+                        <div className="text-2xl font-bold text-primary mb-4 mt-auto">
+                          रू {product.price.toLocaleString()}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex gap-2">
+                          <Button
+                            onClick={() => handleAddToCart(product)}
+                            className="flex-1"
+                            size="sm"
+                          >
+                            <ShoppingCart className="h-4 w-4 mr-2" />
+                            {t('add_to_cart')}
+                          </Button>
+                          <Button
+                            onClick={() => handleRemove(product.id)}
+                            variant="outline"
+                            size="sm"
+                            className="hover:bg-destructive hover:text-destructive-foreground"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </div>
-
-                      {/* Actions */}
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={() => handleAddToCart(product)}
-                          className="flex-1"
-                          size="sm"
-                        >
-                          <ShoppingCart className="h-4 w-4 mr-2" />
-                          Add to Cart
-                        </Button>
-                        <Button
-                          onClick={() => handleRemove(product.id)}
-                          variant="outline"
-                          size="sm"
-                          className="hover:bg-destructive hover:text-destructive-foreground"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
+                    </Link>
                   </Card>
                 </motion.div>
               );
@@ -198,7 +190,7 @@ const Wishlist = () => {
               variant="outline"
               size="lg"
             >
-              Continue Shopping
+              {t('continue_shopping')}
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </motion.div>
@@ -209,3 +201,4 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
+

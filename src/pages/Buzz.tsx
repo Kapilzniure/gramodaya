@@ -1,3 +1,4 @@
+
 // Community Buzz Page - Social Feed with Posts, Likes, Comments, Friends
 // Main social hub for ShoppingGhar community
 import { useState } from 'react';
@@ -8,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { useLanguage } from '@/context/LanguageContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useAppStore, type Post, type Comment } from '@/store/useAppStore';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
@@ -333,4 +334,5 @@ const Buzz = () => {
 };
 
 export default Buzz;
+
 

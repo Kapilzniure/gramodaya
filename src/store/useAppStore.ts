@@ -1,3 +1,4 @@
+
 // Zustand store for global app state management
 // Handles user, products, posts, friends, tokens, and more
  import { create } from 'zustand';
@@ -70,11 +71,21 @@ export interface ChatMessage {
   timestamp: string;
 }
 
+export interface BarterItem {
+  id: string;
+  offering: string;
+  seeking: string;
+  offeringImage: string;
+  seekingCategory: string;
+  user: string;
+  condition: string;
+}
+
 // ===== Store Interface =====
 interface AppStore {
   // Current User
   currentUser: User | null;
-  setCurrentUser: (user: User) => void;
+  setCurrentUser: (user: User | null) => void;
   updateUser: (updates: Partial<User>) => void;
   
   // Users (mock database)
@@ -131,6 +142,10 @@ interface AppStore {
   removeFromWishlist: (userId: string, productId: string) => void;
   isInWishlist: (userId: string, productId: string) => boolean;
   getWishlistByUser: (userId: string) => WishlistItem[];
+
+  // Barter
+  barterListings: BarterItem[];
+  addBarterListing: (listing: BarterItem) => void;
 }
 
 // ===== Store Implementation =====
@@ -380,9 +395,20 @@ export const useAppStore = create<AppStore>()(
       getWishlistByUser: (userId) => {
         return get().wishlist.filter(item => item.userId === userId);
       },
+
+      // === Barter ===
+      barterListings: [],
+      addBarterListing: (listing) => set((state) => ({
+        barterListings: [listing, ...state.barterListings]
+      })),
     }),
     {
       name: 'shoppingghar-storage', // localStorage key
+      partialize: (state) =>
+        Object.fromEntries(
+          Object.entries(state).filter(([key]) => !['currentUser'].includes(key))
+        ),
     }
   )
 );
+
