@@ -64,7 +64,7 @@ const Gifts = () => {
           </div>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Complete fun challenges and unlock amazing free gifts! 🎁 
-            The more you shop, play, and connect, the more you earn.
+            The more you shop, play, and connect, the more you earn🙌.
           </p>
         </motion.div>
 
