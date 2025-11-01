@@ -1,3 +1,4 @@
+
 // Barter Corner - Exchange items without money
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -6,60 +7,33 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { products } from "@/lib/mockData";
-
-interface BarterItem {
-  id: string;
-  offering: string;
-  seeking: string;
-  offeringImage: string;
-  seekingCategory: string;
-  user: string;
-  condition: string;
-}
+import { useAppStore, BarterItem } from "@/store/useAppStore";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 
 const BarterCorner = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const barterListings = useAppStore((state) => state.barterListings);
+  const addBarterListing = useAppStore((state) => state.addBarterListing);
+  const currentUser = useAppStore((state) => state.currentUser);
 
-  // Mock barter listings
-  const barterListings: BarterItem[] = [
-    {
-      id: "1",
-      offering: "Gaming Keyboard RGB",
-      seeking: "Wireless Mouse",
-      offeringImage: products[4].images[0],
-      seekingCategory: "Electronics",
-      user: "TechStore Nepal",
-      condition: "new"
-    },
-    {
-      id: "2",
-      offering: "Vintage Leather Bag",
-      seeking: "Designer Sunglasses",
-      offeringImage: products[2].images[0],
-      seekingCategory: "Fashion",
-      user: "Classic Collections",
-      condition: "used"
-    },
-    {
-      id: "3",
-      offering: "Yoga Mat Premium",
-      seeking: "Running Shoes",
-      offeringImage: products[5].images[0],
-      seekingCategory: "Sports",
-      user: "Wellness Shop",
-      condition: "new"
-    },
-    {
-      id: "4",
-      offering: "Coffee Maker Deluxe",
-      seeking: "Electric Kettle",
-      offeringImage: products[6].images[0],
-      seekingCategory: "Home",
-      user: "Home Essentials",
-      condition: "new"
-    }
-  ];
+  const [newListing, setNewListing] = useState({
+    offering: "",
+    seeking: "",
+    offeringImage: "",
+    seekingCategory: "",
+    condition: "new",
+  });
+
+  const handleCreateListing = () => {
+    if (!currentUser) return;
+    addBarterListing({
+      ...newListing,
+      id: `barter_${Date.now()}`,
+      user: currentUser.name,
+    });
+    setIsCreateOpen(false);
+  };
 
   const filteredListings = barterListings.filter(
     (item) =>
@@ -100,7 +74,7 @@ const BarterCorner = () => {
               className="pl-10"
             />
           </div>
-          <Button variant="hero" className="gap-2">
+          <Button variant="hero" className="gap-2" onClick={() => setIsCreateOpen(true)}>
             <Plus className="h-5 w-5" />
             Post Trade Offer
           </Button>
@@ -198,8 +172,45 @@ const BarterCorner = () => {
           </div>
         )}
       </div>
+
+      <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create a new Barter Listing</DialogTitle>
+            <DialogDescription>
+              Fill in the details below to create a new barter listing.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <Input
+              placeholder="What are you offering?"
+              value={newListing.offering}
+              onChange={(e) => setNewListing({ ...newListing, offering: e.target.value })}
+            />
+            <Input
+              placeholder="What are you seeking?"
+              value={newListing.seeking}
+              onChange={(e) => setNewListing({ ...newListing, seeking: e.target.value })}
+            />
+            <Input
+              placeholder="Image URL of your item"
+              value={newListing.offeringImage}
+              onChange={(e) => setNewListing({ ...newListing, offeringImage: e.target.value })}
+            />
+            <Input
+              placeholder="Category of the item you are seeking"
+              value={newListing.seekingCategory}
+              onChange={(e) => setNewListing({ ...newListing, seekingCategory: e.target.value })}
+            />
+          </div>
+          <DialogFooter>
+            <Button onClick={handleCreateListing}>Create Listing</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 
 export default BarterCorner;
+

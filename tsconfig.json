@@ -2,10 +2,16 @@
   "files": [],
   "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
   "compilerOptions": {
+<<<<<<< HEAD
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+=======
     "baseUrl": ".,src",
     "paths": {
       "@/*": ["./src/*"],
        "assets/*": ["assets/*"]
+>>>>>>> kapilz
     },
     "noImplicitAny": false,
     "noUnusedParameters": false,

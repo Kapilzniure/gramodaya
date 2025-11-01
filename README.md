@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+# Welcome to your Lovable project
+
+## Project info
+
+**URL**: https://lovable.dev/projects/3ce5755c-e5f6-456f-8908-a55dd15b51b9
+=======
 open 2 cmd 
 one for https://github.com/Kaepilz/eBay.git
 another https://github.com/Kaepilz/ghar-joy.git 
@@ -42,6 +49,7 @@ A modern, vibrant e-commerce platform for buying and selling in Nepal. Built wit
 ## 🛠️ Getting Started
 
 **URL**: https://lovable.dev/projects/6c2347bf-e477-44e3-bce5-818a50a5f62b
+>>>>>>> kapilz
 
 ## How can I edit this code?
 
@@ -49,7 +57,11 @@ There are several ways of editing your application.
 
 **Use Lovable**
 
+<<<<<<< HEAD
+Simply visit the [Lovable Project](https://lovable.dev/projects/3ce5755c-e5f6-456f-8908-a55dd15b51b9) and start prompting.
+=======
 Simply visit the [Lovable Project](https://lovable.dev/projects/6c2347bf-e477-44e3-bce5-818a50a5f62b) and start prompting.
+>>>>>>> kapilz
 
 Changes made via Lovable will be committed automatically to this repo.
 
@@ -89,6 +101,11 @@ npm run dev
 - Click on "New codespace" to launch a new Codespace environment.
 - Edit files directly within the Codespace and commit and push your changes once you're done.
 
+<<<<<<< HEAD
+## What technologies are used for this project?
+
+This project is built with:
+=======
 ## 📱 Pages
 
 - `/` - Homepage with hero, categories, and featured products
@@ -132,17 +149,25 @@ Modify `tailwind.config.ts` for:
 - Animation timings
 
 ## 🚀 Technologies
+>>>>>>> kapilz
 
 - Vite
 - TypeScript
 - React
 - shadcn-ui
 - Tailwind CSS
+<<<<<<< HEAD
+
+## How can I deploy this project?
+
+Simply open [Lovable](https://lovable.dev/projects/3ce5755c-e5f6-456f-8908-a55dd15b51b9) and click on Share -> Publish.
+=======
 - Framer Motion
 
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/6c2347bf-e477-44e3-bce5-818a50a5f62b) and click on Share -> Publish.
+>>>>>>> kapilz
 
 ## Can I connect a custom domain to my Lovable project?
 

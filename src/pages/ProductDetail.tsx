@@ -1,8 +1,9 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { products } from "@/lib/mockData";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +11,8 @@ import { ProductCard } from "@/components/ProductCard";
 import { toast } from "sonner";
 import { ShoppingCart, Star, Store, Minus, Plus, ArrowLeft, Heart } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
+import { cn } from "@/lib/utils";
+import { ChatButton } from "@/components/messaging/ChatButton";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -28,6 +31,10 @@ const ProductDetail = () => {
   const [isWishlisted, setIsWishlisted] = useState(
     currentUser && product ? isInWishlist(currentUser.id, product.id) : false
   );
+
+  useEffect(() => {
+    setIsWishlisted(currentUser && product ? isInWishlist(currentUser.id, product.id) : false);
+  }, [currentUser, isInWishlist, product]);
 
   if (!product) {
     return (
@@ -199,17 +206,47 @@ const ProductDetail = () => {
                 <ShoppingCart className="mr-2 h-5 w-5" />
                 Add to Cart
               </Button>
-              <Button 
-                variant="outline" 
-                size="lg" 
-                onClick={handleWishlistToggle}
-                className={isWishlisted ? 'border-red-500 text-red-500' : ''}
-              >
-                <Heart 
-                  className={`mr-2 h-5 w-5 ${isWishlisted ? 'fill-red-500' : ''}`}
+              <div className="flex gap-2 flex-1">
+                <Button 
+                  variant="outline" 
+                  size="lg"
+                  onClick={handleWishlistToggle}
+                  className={cn("flex-1", isWishlisted ? 'border-red-500 text-red-500' : '')}
+                >
+                  <AnimatePresence mode="wait">
+                    {isWishlisted ? (
+                      <motion.div
+                        key="heart-filled"
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Heart 
+                          className="mr-2 h-5 w-5 fill-red-500"
+                        />
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="heart-empty"
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Heart 
+                          className="mr-2 h-5 w-5"
+                        />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  {isWishlisted ? 'Saved' : 'Save'}
+                </Button>
+                <ChatButton 
+                  sellerId={product.seller.id} 
+                  sellerName={product.seller.name} 
                 />
-                {isWishlisted ? 'Saved' : 'Save'}
-              </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -235,3 +272,4 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+

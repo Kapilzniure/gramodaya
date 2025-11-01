@@ -1,3 +1,4 @@
+
 // Buyer Profile Page
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -8,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { products } from "@/lib/mockData";
 import { ProductCard } from "@/components/ProductCard";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/contexts/CartContext";
 
 const Profile = () => {
   const { addItem } = useCart();
@@ -212,3 +213,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

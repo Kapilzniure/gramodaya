@@ -1,7 +1,8 @@
+
 // Language Toggle Component - Switches between Nepali and English
 import { Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useLanguage } from '@/context/LanguageContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,3 +38,4 @@ export const LanguageToggle = () => {
     </DropdownMenu>
   );
 };
+
