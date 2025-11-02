@@ -1,3 +1,4 @@
+
 // Full-Screen Spin Wheel Page - Gamified reward system
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -5,7 +6,7 @@ import { Gift, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useLanguage } from '@/context/LanguageContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { useAppStore, type SpinResult } from '@/store/useAppStore';
 import { CircleSpinner } from '@/components/CircleSpinner';
 import { useNavigate } from 'react-router-dom';
@@ -277,3 +278,4 @@ const SpinWheel = () => {
 };
 
 export default SpinWheel;
+

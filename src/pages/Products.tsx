@@ -1,7 +1,8 @@
+
 import { useState } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { products, categories } from "@/lib/mockData";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/contexts/CartContext";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -101,3 +102,4 @@ const Products = () => {
 };
 
 export default Products;
+

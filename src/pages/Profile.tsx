@@ -1,3 +1,4 @@
+
 // Buyer Profile Page
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
@@ -350,3 +351,4 @@ const Profile = () => {
 };
 
 export default Profile;
+

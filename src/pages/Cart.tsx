@@ -1,18 +1,28 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useCart } from "@/context/CartContext";
+import { useCart }from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Minus, Plus, Trash2, ShoppingBag, Tag } from "lucide-react";
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 const Cart = () => {
   const { items, updateQuantity, removeItem, clearCart, cartTotal } = useCart();
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [qrMissing, setQrMissing] = useState(false);
 
   const applyCoupon = () => {
     const validCoupons: Record<string, number> = {
@@ -172,10 +182,7 @@ const Cart = () => {
               variant="hero"
               size="lg"
               className="w-full mb-4"
-              onClick={() => {
-                toast.success("Order placed successfully!");
-                setTimeout(() => clearCart(), 1500);
-              }}
+              onClick={() => setCheckoutOpen(true)}
             >
               Checkout
             </Button>
@@ -187,6 +194,59 @@ const Cart = () => {
             >
               <Link to="/products">Continue Shopping</Link>
             </Button>
+            {/* Checkout Dialog */}
+            <Dialog open={checkoutOpen} onOpenChange={setCheckoutOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Pay with eSewa</DialogTitle>
+                  <DialogDescription>
+                    Scan the QR code below in your eSewa app to pay. After payment, click "I Paid" to confirm and place the order.
+                  </DialogDescription>
+                </DialogHeader>
+
+                <div className="flex flex-col items-center gap-4 py-4">
+                  {!qrMissing ? (
+                    <img
+                      src="/esewa-qr.jpg"
+                      alt="eSewa QR"
+                      className="w-48 h-48 object-cover rounded-md shadow-md"
+                      onError={() => setQrMissing(true)}
+                    />
+                  ) : (
+                    <div className="text-center text-sm text-muted-foreground">
+                      eSewa QR not found. Please copy your QR image to the project's <code>public</code> folder as <code>esewa-qr.jpg</code> (see instructions below) or contact the seller for payment details.
+                    </div>
+                  )}
+
+                  <div className="text-center text-xs text-muted-foreground">
+                    Please place the QR image in the public folder to enable payments.
+                  </div>
+                </div>
+
+                <DialogFooter>
+                  <div className="flex w-full gap-2">
+                    <Button variant="outline" className="flex-1" onClick={() => setCheckoutOpen(false)}>
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="hero"
+                      className="flex-1"
+                      onClick={() => {
+                        if (qrMissing) {
+                          toast.error("QR not available — cannot confirm payment here.");
+                          return;
+                        }
+                        toast.success("Order placed successfully!");
+                        clearCart();
+                        setCheckoutOpen(false);
+                      }}
+                    >
+                      I Paid
+                    </Button>
+                  </div>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </Card>
         </div>
       </div>

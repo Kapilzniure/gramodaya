@@ -1,3 +1,4 @@
+
 // ============================================
 // Mobile Bottom Navigation
 // Sticky bottom tabs for mobile users
@@ -6,7 +7,7 @@
 import { Home, Gift, TrendingUp, User, ShoppingCart, Heart } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useCart } from "@/context/CartContext";
+import { useCart } from "@/contexts/CartContext";
 
 export const MobileBottomNav = () => {
   const location = useLocation();
@@ -75,3 +76,4 @@ export const MobileBottomNav = () => {
     </div>
   );
 };
+
