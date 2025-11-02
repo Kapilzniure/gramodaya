@@ -31,6 +31,8 @@ import UserProfile from "./pages/UserProfile";
 import { LevelUpCelebration } from '@/components/LevelUpCelebration';
 import { useAppStore } from '@/store/useAppStore';
 import TrackOrder from "./pages/TrackOrder";
+import Confirm from "./pages/auth/confirm";
+import ResetPassword from "./pages/auth/resetpassword";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +66,7 @@ const App = () => {
                     <Route path="/sell" element={<Sell />} />
                     <Route path="/seller-dashboard" element={<SellerDashboard />} />
                     <Route path="/profile" element={<Profile />} />
+                    <Route path="/auth/confirm" element={<Confirm />} />
                     <Route path="/profile/:username" element={<UserProfile />} />
                     <Route path="/upload-product" element={<UploadProduct />} />
                     <Route path="/barter" element={<BarterCorner />} />
@@ -75,6 +78,7 @@ const App = () => {
                     <Route path="/spin" element={<SpinWheel />} />
                     <Route path="/gifts" element={<Gifts />} />
                     <Route path="/wishlist" element={<Wishlist />} />
+                    <Route path="/auth/reset-password" element={<ResetPassword />} />
                     <Route path="/help" element={<FeedbackHelp />} />
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                     <Route path="*" element={<NotFound />} />
