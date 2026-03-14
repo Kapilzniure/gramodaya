@@ -19,7 +19,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <BrowserRouter>
+      <BrowserRouter  basename="/gramodaya">
         <Routes>
           <Route path="/" element={<SchoolWebsite />} />
           <Route path="/admin" element={<AdminDashboard />} />
